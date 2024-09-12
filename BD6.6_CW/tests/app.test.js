@@ -3,10 +3,12 @@ const http = require("http");
 let { app } = require("../index.js");
 let {getAllEmployees,getEmployeesByID} = require("../controllers");
 const { beforeEach, describe } = require("node:test");
-jest.mock("../controllers",()=>{
+
+jest.mock("../controllers",()=>({
   ...jest.requireActual("../controllers"),
   getAllEmployees:jest.fn()
-})
+}));
+
 let server;
 beforeAll((done) => {
   server = http.createServer(app);
@@ -79,9 +81,9 @@ describe("controller function tests", () => {
             departmentId: 1,
             roleId: 3,
         },
-      ];
-     
+      ],
     })
+    
     expect(res.body.length).toBe(3)
     })
     it("get /employees/details/:id should get an employee by ID", async()=>{
